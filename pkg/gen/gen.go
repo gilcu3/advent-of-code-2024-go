@@ -3,7 +3,6 @@ package gen
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"regexp"
 	"strconv"
@@ -11,6 +10,8 @@ import (
 
 	"github.com/dolmen-go/codegen"
 	"github.com/sirupsen/logrus"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 const yearsFile = "./pkg/years/years.go"
@@ -143,7 +144,7 @@ func InitializePackage(year int) {
 	puzzles := ""
 
 	newYearPkgDirectory(year)
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		logrus.Fatal(err)
 	}
@@ -157,7 +158,8 @@ func InitializePackage(year int) {
 			continue
 		}
 		day, _ := strconv.Atoi(puzzleName[3:])
-		puzzles += fmt.Sprintf("%d: %s{},\n", day, strings.Title(strings.ToLower(puzzleName)))
+		correctPuzzleName := cases.Title(language.English).String(cases.Lower(language.English).String(puzzleName))
+		puzzles += fmt.Sprintf("%d: %s{},\n", day, correctPuzzleName)
 		logrus.Debugf("Found puzzle file for %d-%d", year, day)
 	}
 
@@ -196,7 +198,7 @@ func InitializeYearsPackages() {
 
 	var imports, inits string
 
-	dirs, err := ioutil.ReadDir(path)
+	dirs, err := os.ReadDir(path)
 	if err != nil {
 		logrus.Fatal(err)
 	}
@@ -240,7 +242,7 @@ func NewBenchmarks(year int) {
 
 	benchmarks := ""
 
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		logrus.Fatal(err)
 	}
