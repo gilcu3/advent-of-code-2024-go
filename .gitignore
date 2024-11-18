@@ -1,3 +1,4 @@
 bin/aocgen
-.cookie
-**/inputs/*
+**/year*/desc/*
+**/year*/input/*
+**/year*/sample/*

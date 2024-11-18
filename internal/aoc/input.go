@@ -1,4 +1,4 @@
-package gen
+package aoc
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ func WebInput(year, day int) []byte {
 	url := fmt.Sprintf("https://adventofcode.com/%d/day/%d/input", year, day)
 	c := http.Client{Timeout: time.Duration(3) * time.Second}
 
-	cookie, err := os.ReadFile(".cookie")
+	cookie, err := os.ReadFile("/home/rey/.adventofcode.session")
 	if err != nil {
 		logrus.Fatal(err)
 	}

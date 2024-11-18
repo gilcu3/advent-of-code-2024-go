@@ -1,3 +1,5 @@
 #!/bin/sh
+go vet ./...
+staticcheck ./...
 go build -o bin/aocgen cmd/aocgen/main.go
-bin/aocgen -y 2024 $@
+bin/aocgen $@

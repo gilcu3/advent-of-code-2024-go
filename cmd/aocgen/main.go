@@ -10,15 +10,14 @@ import (
 	"strings"
 	"time"
 
-	"aocgen/pkg/aoc"
-	"aocgen/pkg/gen"
-	"aocgen/pkg/years"
+	"aocgen/internal/aoc"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
 var year, day int
+var updateReadme bool
 
 var benchCmd = &cobra.Command{
 	Use:   "bench",
@@ -31,16 +30,21 @@ var benchCmd = &cobra.Command{
 
 		benchArgRegex := fmt.Sprintf("^Benchmark%d", year)
 		if day > 0 {
-			benchArgRegex += fmt.Sprintf("Day%s", gen.FormatDay(day))
+			benchArgRegex += fmt.Sprintf("Day%s", aoc.FormatDay(day))
 		}
 
-		cmdArgs := fmt.Sprintf("go test -benchmem -run=^$ -bench %s aocgen/pkg/year%d", benchArgRegex, year)
+		cmdArgs := fmt.Sprintf("go test -bench %s aocgen/internal/aoc/year%d", benchArgRegex, year)
 		c := exec.Command("bash", "-c", cmdArgs)
 		out, err := c.Output()
 		if err != nil {
 			logrus.Error(err)
 		}
-		fmt.Println(string(out))
+		println(string(out))
+
+		if updateReadme {
+			results := aoc.ParseBenchMark(string(out))
+			aoc.UpdateBenchmarkResults(results)
+		}
 	},
 }
 
@@ -49,14 +53,14 @@ var buildCmd = &cobra.Command{
 	Short: "Build generated code",
 	Long:  "",
 	Run: func(cmd *cobra.Command, args []string) {
-		years.RegisterYears()
+		aoc.RegisterYears()
 
-		gen.InitializeYearsPackages()
+		aoc.InitializeYearsPackages()
 
 		years := aoc.Years()
 		for _, y := range years {
-			gen.InitializePackage(y)
-			gen.NewBenchmarks(y)
+			aoc.InitializePackage(y)
+			aoc.NewBenchmarks(y)
 		}
 	},
 }
@@ -81,12 +85,12 @@ var genCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		gen.InitializePackage(year)
-		gen.NewInputFile(year, day)
-		gen.NewPuzzleFile(year, day)
-		gen.InitializePackage(year)
-		gen.InitializeYearsPackages()
-		gen.NewBenchmarks(year)
+		aoc.InitializePackage(year)
+		aoc.Download(year, day)
+		aoc.NewPuzzleFile(year, day)
+		aoc.InitializePackage(year)
+		aoc.InitializeYearsPackages()
+		aoc.NewBenchmarks(year)
 	},
 }
 
@@ -95,7 +99,7 @@ var inputCmd = &cobra.Command{
 	Short: "Display puzzle input for a given puzzle",
 	Long:  "",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(string(gen.WebInput(year, day)))
+		aoc.Check()
 	},
 }
 
@@ -104,7 +108,7 @@ var listCmd = &cobra.Command{
 	Short: "List all years or list all puzzles in a year",
 	Long:  "",
 	Run: func(cmd *cobra.Command, args []string) {
-		years.RegisterYears()
+		aoc.RegisterYears()
 
 		if year != 0 {
 			puzzles := aoc.Puzzles(year)
@@ -149,8 +153,8 @@ var rmCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		gen.RemovePuzzle(year, day)
-		gen.RemovePuzzleInput(year, day)
+		aoc.RemovePuzzle(year, day)
+		aoc.RemovePuzzleInput(year, day)
 	},
 }
 
@@ -163,7 +167,7 @@ var runCmd = &cobra.Command{
 			logrus.Fatal("invalid year")
 		}
 
-		years.RegisterYears()
+		aoc.RegisterYears()
 
 		if day > 0 {
 			runDay(year, day)
@@ -183,7 +187,7 @@ var rootCmd = &cobra.Command{
 func Execute() {
 	rootCmd.PersistentFlags().IntVarP(&year, "year", "y", 0, "year input")
 	rootCmd.PersistentFlags().IntVarP(&day, "day", "d", 0, "day input")
-
+	benchCmd.Flags().BoolVar(&updateReadme, "update", false, "Update the Readme file")
 	rootCmd.AddCommand(benchCmd)
 	rootCmd.AddCommand(buildCmd)
 	rootCmd.AddCommand(genCmd)
