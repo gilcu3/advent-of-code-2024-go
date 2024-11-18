@@ -31,12 +31,12 @@ func Year() int {
 }
 
 func Input(year, day int) []string {
-	fileName := fmt.Sprintf("./input/day%.2d.in", day)
+	fileName := fmt.Sprintf("./year%d/input/day%.2d.in", year, day)
 	return readFile(fileName)
 }
 
 func TestInput(year, day int) []string {
-	fileName := fmt.Sprintf("./input/day%.2d.in", day)
+	fileName := fmt.Sprintf("../year%d/input/day%.2d.in", year, day)
 	return readFile(fileName)
 }
 

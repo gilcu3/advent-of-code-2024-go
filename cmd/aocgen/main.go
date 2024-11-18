@@ -30,10 +30,10 @@ var benchCmd = &cobra.Command{
 
 		benchArgRegex := fmt.Sprintf("^Benchmark%d", year)
 		if day > 0 {
-			benchArgRegex += fmt.Sprintf("Day%s", aoc.FormatDay(day))
+			benchArgRegex += fmt.Sprint(aoc.FormatDay(day))
 		}
 
-		cmdArgs := fmt.Sprintf("go test -bench %s aocgen/internal/aoc/year%d", benchArgRegex, year)
+		cmdArgs := fmt.Sprintf("go test -bench %s aocgen/internal/aoc/tests", benchArgRegex)
 		c := exec.Command("bash", "-c", cmdArgs)
 		out, err := c.Output()
 		if err != nil {
