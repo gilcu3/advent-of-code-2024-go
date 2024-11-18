@@ -1,3 +1,30 @@
+<img src="./.assets/christmas_gopher.svg" width="164">
+
+# 🎄 Advent of Code 2024
+
+Solutions for [Advent of Code](https://adventofcode.com/) in [Go](https://go.dev/).
+
+<!--- advent_readme_stars table --->
+## 2024 Results
+
+| Day | Part 1 | Part 2 |
+| :---: | :---: | :---: |
+<!--- advent_readme_stars table --->
+
+<!--- benchmarking table --->
+## Benchmarks
+
+| Day | Part 1 | Part 2 |
+| :---: | :---: | :---:  |
+
+**Total: 0ms**
+<!--- benchmarking table --->
+
+---
+
+<details>
+<summary>Template readme</summary>
+
 # AOCgen
 
 AOCgen is a tool to assist in solving Advent of Code in Go.
