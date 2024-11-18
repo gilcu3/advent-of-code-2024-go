@@ -2,8 +2,7 @@ package gen
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
+	"io"
 	"net/http"
 	"os"
 	"time"
@@ -16,19 +15,22 @@ func WebInput(year, day int) []byte {
 	url := fmt.Sprintf("https://adventofcode.com/%d/day/%d/input", year, day)
 	c := http.Client{Timeout: time.Duration(3) * time.Second}
 
+	cookie, err := os.ReadFile(".cookie")
+	if err != nil {
+		logrus.Fatal(err)
+	}
+
 	session := &http.Cookie{
 		Name:   "session",
-		Value:  os.Getenv("AOC_SESSION"),
+		Value:  string(cookie),
 		MaxAge: 0,
 	}
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Fatalf("Error with HTTP request: %s", err.Error())
+		logrus.Fatalf("Error with HTTP request: %s", err.Error())
 	}
 	req.AddCookie(session)
-
-	req.Header.Set("User-Agent", "github.com/timkelleher/aocgen by tim@timkelleher.com")
 
 	resp, err := c.Do(req)
 	if err != nil {
@@ -42,7 +44,7 @@ func WebInput(year, day int) []byte {
 		return nil
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		logrus.Errorf("Error: %s", err)
 		return nil
