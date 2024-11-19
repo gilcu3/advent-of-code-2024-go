@@ -27,9 +27,12 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Go](https://go.dev
 
 # AOCgen
 
-AOCgen is a tool to assist in solving Advent of Code in Go.
+AOCgen is a tool to assist in solving Advent of Code in Go. This is a heavily
+modified fork.
 
 ## Setup
+
+You need to set up [aoc-cli](https://github.com/scarvalhojr/aoc-cli) in order to download input and making submissions automatically.
 
 Run AOCgen via executable: ```./aocgen```
 
@@ -52,10 +55,6 @@ This will generate two files: the puzzle (```pkg/year<year>/<day>.go```) and its
 Open up the puzzle and remove the DO NOT EDIT line to begin working.
 
 Run the puzzle through the ```aocgen``` command as well: ```./aocgen run -y <year> -d <day>```
-
-### Automatically pulling puzzle input from website
-
-Export the environment variable ```AOC_SESSION``` with your adventofcode.com session cookie value.  Otherwise, you'll need to manually copy the input into your generated input file.
 
 ### Benchmarking
 
