@@ -49,37 +49,42 @@ func NewPuzzle(year, day int) Puzzle {
 	return puzzle
 }
 
-func Run(year, day int, p Puzzle, input []string) {
+func Run(year, day, part int, p Puzzle, input []string, submitRun bool) {
 	if p == nil {
 		logrus.Fatal("Failed to run empty puzzle")
 		return
 	}
-
-	logrus.Infof("%d Day %d, Part A Result: %v", year, day, p.PartA(input))
-	logrus.Infof("%d Day %d, Part B Result: %v", year, day, p.PartB(input))
+	var ans string
+	if part == 0 {
+		ans = p.PartA(input)
+		logrus.Infof("%d Day %d, Part A Result: %v", year, day, ans)
+	} else if part == 1 {
+		ans = p.PartB(input)
+		logrus.Infof("%d Day %d, Part B Result: %v", year, day, ans)
+	}
+	if submitRun {
+		Submit(year, day, part, ans)
+	}
 }
 
-func TestRun(year, day int, p Puzzle, input []string) {
+func TestRun(year, day, part int, p Puzzle, input []string) {
 	if p == nil {
 		logrus.Fatal("Failed to run empty puzzle")
 		return
 	}
-	p.SampleA(input)
-	p.SampleB(input)
-}
-
-func RunYear(year int, testRun bool) {
-	puzzles := Puzzles(year)
-	for i := 1; i <= len(puzzles); i++ {
-		RunDay(year, i, testRun)
+	if part == 0 {
+		p.SampleA(input)
+	} else if part == 1 {
+		p.SampleB(input)
 	}
+
 }
 
-func RunDay(year, day int, testRun bool) {
+func RunDay(year, day, part int, testRun, submitRun bool) {
 	if testRun {
-		TestRun(year, day, NewPuzzle(year, day), SampleInput(year, day))
+		TestRun(year, day, part, NewPuzzle(year, day), SampleInput(year, day))
 	} else {
-		Run(year, day, NewPuzzle(year, day), Input(year, day))
+		Run(year, day, part, NewPuzzle(year, day), Input(year, day), submitRun)
 	}
 
 }

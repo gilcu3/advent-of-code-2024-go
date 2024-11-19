@@ -16,9 +16,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var year, day int
+var year, day, part int
 var updateReadme bool
 var testRun bool
+var submitRun bool
 
 var benchCmd = &cobra.Command{
 	Use:   "bench",
@@ -164,19 +165,26 @@ var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "Run a puzzle",
 	Long:  "",
-	Run: func(cmd *cobra.Command, args []string) {
-		if year <= 0 {
-			logrus.Fatal("invalid year")
+	Args: func(cmd *cobra.Command, args []string) error {
+		if testRun && submitRun {
+			return errors.New("cannot test and submit at the same time")
 		}
+		if year <= 0 {
+			return errors.New("invalid year")
+		}
+		if day <= 0 {
+			return errors.New("invalid day")
+		}
+		if part <= 0 {
+			return errors.New("invalid part")
+		}
+		return nil
+	},
+	Run: func(cmd *cobra.Command, args []string) {
 
 		aoc.RegisterYears()
 
-		if day > 0 {
-			aoc.RunDay(year, day, testRun)
-			return
-		}
-
-		aoc.RunYear(year, testRun)
+		aoc.RunDay(year, day, part, testRun, submitRun)
 	},
 }
 
@@ -190,7 +198,9 @@ func Execute() {
 	rootCmd.PersistentFlags().IntVarP(&year, "year", "y", 0, "year input")
 	rootCmd.PersistentFlags().IntVarP(&day, "day", "d", 0, "day input")
 	benchCmd.Flags().BoolVar(&updateReadme, "update", false, "Update the Readme file")
+	runCmd.PersistentFlags().IntVarP(&part, "part", "p", 0, "part input")
 	runCmd.Flags().BoolVar(&testRun, "test", false, "Run tests")
+	runCmd.Flags().BoolVar(&submitRun, "submit", false, "Run tests")
 	rootCmd.AddCommand(benchCmd)
 	rootCmd.AddCommand(buildCmd)
 	rootCmd.AddCommand(genCmd)

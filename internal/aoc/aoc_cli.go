@@ -74,3 +74,9 @@ func Download(year, day int) {
 	logrus.Infof("🎄 Successfully wrote input to %s.", inputPath)
 	logrus.Infof("🎄 Successfully wrote description to %s.", descPath)
 }
+
+func Submit(year, day, part int, ans string) {
+	args := []string{"submit", "--year", strconv.Itoa(year), "--day", strconv.Itoa(day), strconv.Itoa(part), ans}
+	output := call_aoc_cli(args)
+	logrus.Infof("🎄 Successfully submitted. Result: %s", output)
+}
