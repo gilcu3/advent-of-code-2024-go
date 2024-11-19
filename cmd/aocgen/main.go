@@ -18,6 +18,7 @@ import (
 
 var year, day int
 var updateReadme bool
+var testRun bool
 
 var benchCmd = &cobra.Command{
 	Use:   "bench",
@@ -171,11 +172,11 @@ var runCmd = &cobra.Command{
 		aoc.RegisterYears()
 
 		if day > 0 {
-			runDay(year, day)
+			aoc.RunDay(year, day, testRun)
 			return
 		}
 
-		runYear(year)
+		aoc.RunYear(year, testRun)
 	},
 }
 
@@ -189,6 +190,7 @@ func Execute() {
 	rootCmd.PersistentFlags().IntVarP(&year, "year", "y", 0, "year input")
 	rootCmd.PersistentFlags().IntVarP(&day, "day", "d", 0, "day input")
 	benchCmd.Flags().BoolVar(&updateReadme, "update", false, "Update the Readme file")
+	runCmd.Flags().BoolVar(&testRun, "test", false, "Run tests")
 	rootCmd.AddCommand(benchCmd)
 	rootCmd.AddCommand(buildCmd)
 	rootCmd.AddCommand(genCmd)
@@ -200,17 +202,6 @@ func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
-}
-
-func runYear(year int) {
-	puzzles := aoc.Puzzles(year)
-	for i := 1; i <= len(puzzles); i++ {
-		runDay(year, i)
-	}
-}
-
-func runDay(year, day int) {
-	aoc.Run(year, day, aoc.NewPuzzle(year, day), aoc.Input(year, day))
 }
 
 func main() {

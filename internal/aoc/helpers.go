@@ -15,7 +15,12 @@ func Year() int {
 }
 
 func Input(year, day int) []string {
-	fileName := fmt.Sprintf("./year%d/input/day%s.in", year, FormatDay(day))
+	fileName := fmt.Sprintf("./internal/aoc/year%d/input/day%s.in", year, FormatDay(day))
+	return readFile(fileName)
+}
+
+func SampleInput(year, day int) []string {
+	fileName := fmt.Sprintf("./internal/aoc/year%d/sample/day%s.in", year, FormatDay(day))
 	return readFile(fileName)
 }
 

@@ -7,8 +7,10 @@ import (
 )
 
 type Puzzle interface {
-	PartA([]string) any
-	PartB([]string) any
+	PartA([]string) string
+	PartB([]string) string
+	SampleA([]string)
+	SampleB([]string)
 }
 
 var puzzles = map[int]map[int]Puzzle{}
@@ -50,8 +52,34 @@ func NewPuzzle(year, day int) Puzzle {
 func Run(year, day int, p Puzzle, input []string) {
 	if p == nil {
 		logrus.Fatal("Failed to run empty puzzle")
+		return
 	}
 
 	logrus.Infof("%d Day %d, Part A Result: %v", year, day, p.PartA(input))
 	logrus.Infof("%d Day %d, Part B Result: %v", year, day, p.PartB(input))
+}
+
+func TestRun(year, day int, p Puzzle, input []string) {
+	if p == nil {
+		logrus.Fatal("Failed to run empty puzzle")
+		return
+	}
+	p.SampleA(input)
+	p.SampleB(input)
+}
+
+func RunYear(year int, testRun bool) {
+	puzzles := Puzzles(year)
+	for i := 1; i <= len(puzzles); i++ {
+		RunDay(year, i, testRun)
+	}
+}
+
+func RunDay(year, day int, testRun bool) {
+	if testRun {
+		TestRun(year, day, NewPuzzle(year, day), SampleInput(year, day))
+	} else {
+		Run(year, day, NewPuzzle(year, day), Input(year, day))
+	}
+
 }
