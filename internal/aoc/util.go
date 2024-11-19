@@ -80,11 +80,11 @@ func humanTime(ns float64) string {
 	milliseconds := microseconds / 1000
 	seconds := milliseconds / 1000
 
-	if seconds > 0 {
-		return fmt.Sprintf("%.3fm", seconds)
-	} else if milliseconds > 0 {
+	if seconds >= 1 {
+		return fmt.Sprintf("%.3fs", seconds)
+	} else if milliseconds >= 1 {
 		return fmt.Sprintf("%.3fms", milliseconds)
-	} else if microseconds > 0 {
+	} else if microseconds >= 1 {
 		return fmt.Sprintf("%.3fµs", microseconds)
 	} else {
 		return fmt.Sprintf("%.3fns", ns)
