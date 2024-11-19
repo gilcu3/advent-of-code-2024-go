@@ -27,6 +27,20 @@ func CreateDirectory(path string) error {
 	return nil
 }
 
+func RemoveFile(fileName string) {
+	err := os.RemoveAll(fileName)
+	if err != nil {
+		logrus.Error(err)
+		return
+	}
+	logrus.Info(fmt.Sprintf("File/Dir deleted: %s", fileName))
+
+}
+
+func FormatDay(day int) string {
+	return fmt.Sprintf("%.2d", day)
+}
+
 func RemoveFirstLine(filePath string) error {
 
 	file, err := os.Open(filePath)
@@ -156,7 +170,7 @@ func printTable(table map[int][]*float64) string {
 			resPartB = humanTime(*partB)
 		}
 		if partA != nil || partB != nil {
-			result += fmt.Sprintf("| [Day %d](./internal/aoc/day%.2d.go) | `%s` | `%s` |\n", i, i, resPartA, resPartB)
+			result += fmt.Sprintf("| [Day %d](./internal/aoc/day%s.go) | `%s` | `%s` |\n", i, FormatDay(i), resPartA, resPartB)
 		}
 
 	}

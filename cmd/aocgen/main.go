@@ -30,7 +30,7 @@ var benchCmd = &cobra.Command{
 
 		benchArgRegex := fmt.Sprintf("^Benchmark%d", year)
 		if day > 0 {
-			benchArgRegex += fmt.Sprint(aoc.FormatDay(day))
+			benchArgRegex += aoc.FormatDay(day)
 		}
 
 		cmdArgs := fmt.Sprintf("go test -bench %s aocgen/internal/aoc/tests", benchArgRegex)
@@ -55,12 +55,12 @@ var buildCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		aoc.RegisterYears()
 
-		aoc.InitializeYearsPackages()
+		aoc.UpdateYearsFile()
 
 		years := aoc.Years()
-		for _, y := range years {
-			aoc.InitializePackage(y)
-			aoc.NewBenchmarks(y)
+		for _, year := range years {
+			aoc.InitializePackage(year)
+			aoc.UpdateBenchmarks(year)
 		}
 	},
 }
@@ -89,8 +89,8 @@ var genCmd = &cobra.Command{
 		aoc.Download(year, day)
 		aoc.NewPuzzleFile(year, day)
 		aoc.InitializePackage(year)
-		aoc.InitializeYearsPackages()
-		aoc.NewBenchmarks(year)
+		aoc.UpdateYearsFile()
+		aoc.UpdateBenchmarks(year)
 	},
 }
 
@@ -144,17 +144,18 @@ var rmCmd = &cobra.Command{
 	Short: "Delete a puzzle and its input",
 	Long:  "",
 	Args: func(cmd *cobra.Command, args []string) error {
-		if year <= 0 {
-			return errors.New("invalid year")
-		}
-		if day <= 0 {
-			return errors.New("invalid day")
-		}
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		aoc.RemovePuzzle(year, day)
-		aoc.RemovePuzzleInput(year, day)
+		if year <= 0 {
+			aoc.RemoveAll()
+		} else if day <= 0 {
+			aoc.RemoveYear(year)
+		} else {
+			aoc.RemoveDay(year, day)
+			aoc.UpdateBenchmarks(year)
+		}
+		aoc.UpdateYearsFile()
 	},
 }
 

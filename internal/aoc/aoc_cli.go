@@ -29,15 +29,15 @@ func call_aoc_cli(args []string) string {
 }
 
 func getInputPath(year, day int) string {
-	return fmt.Sprintf("internal/aoc/year%d/input/day%.2d.in", year, day)
+	return fmt.Sprintf("internal/aoc/year%d/input/day%s.in", year, FormatDay(day))
 }
 
 func getSamplePath(year, day int) string {
-	return fmt.Sprintf("internal/aoc/year%d/sample/day%.2d.in", year, day)
+	return fmt.Sprintf("internal/aoc/year%d/sample/day%s.in", year, FormatDay(day))
 }
 
 func getDescPath(year, day int) string {
-	return fmt.Sprintf("internal/aoc/year%d/desc/day%.2d.md", year, day)
+	return fmt.Sprintf("internal/aoc/year%d/desc/day%s.md", year, FormatDay(day))
 }
 
 func createPuzzleDirs(year int) {
