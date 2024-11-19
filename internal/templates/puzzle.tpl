@@ -8,12 +8,26 @@ type Day{{.Day}} struct{}
 const ansSampleA = ""
 
 func (p Day{{.Day}}) PartA(lines []string) string {
+    var ans = 0
+	for _, line := range lines {
+		if len(line) == 0 {
+			continue
+		}
+		
+	}
     return fmt.Sprint(nil)
 }
 
 const ansSampleB = ""
 
 func (p Day{{.Day}}) PartB(lines []string) string {
+    var ans = 0
+	for _, line := range lines {
+		if len(line) == 0 {
+			continue
+		}
+		
+	}
     return fmt.Sprint(nil)
 }
 
@@ -35,7 +49,7 @@ func (p Day{{.Day}}) SampleB(lines []string) {
     if ans == fmt.Sprint(nil) {
     } else if ansSampleB == "" {
         fmt.Println("Correct answer PartB missing, got", ans)
-    } else if ans != ansSampleA {
+    } else if ans != ansSampleB {
         fmt.Println("Answer to PartB incorrect", ans, ansSampleB)
     } else {
         fmt.Println("Answer to PartB correct", ans)
