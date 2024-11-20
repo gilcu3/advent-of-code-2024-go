@@ -1,4 +1,4 @@
-package aoc
+package util
 
 import (
 	"bufio"
@@ -110,7 +110,7 @@ func ParseBenchMark(output string) []BenchmarkResult {
 
 	lines := strings.Split(output, "\n")
 
-	re := regexp.MustCompile(`^Benchmark(\d\d\d\d)(\d\d)/Part(A|B)-\d+\s+\d+\s+(\d+|[\d.]+)\s+ns/op`)
+	re := regexp.MustCompile(`^Benchmark(\d\d\d\d)(\d\d)/Part(1|2)-\d+\s+\d+\s+(\d+|[\d.]+)\s+ns/op`)
 
 	for _, line := range lines {
 		if matches := re.FindStringSubmatch(line); matches != nil {
@@ -157,20 +157,20 @@ func printTable(table map[int][]*float64) string {
 	result += headerTable
 	total := 0.0
 	for i := 1; i <= 25; i++ {
-		partA := table[i][0]
-		resPartA := "-"
-		if partA != nil {
-			total += *partA
-			resPartA = humanTime(*partA)
+		part1 := table[i][0]
+		resPart1 := "-"
+		if part1 != nil {
+			total += *part1
+			resPart1 = humanTime(*part1)
 		}
-		partB := table[i][1]
-		resPartB := "-"
-		if partB != nil {
-			total += *partB
-			resPartB = humanTime(*partB)
+		part2 := table[i][1]
+		resPart2 := "-"
+		if part2 != nil {
+			total += *part2
+			resPart2 = humanTime(*part2)
 		}
-		if partA != nil || partB != nil {
-			result += fmt.Sprintf("| [Day %d](./internal/aoc/day%s.go) | `%s` | `%s` |\n", i, FormatDay(i), resPartA, resPartB)
+		if part1 != nil || part2 != nil {
+			result += fmt.Sprintf("| [Day %d](./internal/aoc/day%s.go) | `%s` | `%s` |\n", i, FormatDay(i), resPart1, resPart2)
 		}
 
 	}
@@ -179,7 +179,6 @@ func printTable(table map[int][]*float64) string {
 	return result
 }
 
-// "| [Day 1](./src/bin/01.rs) | `10ms` | `20ms` |"
 func UpdateBenchmarkResults(results []BenchmarkResult) {
 	path := "README.md"
 	readmeBytes, _ := os.ReadFile(path)
@@ -200,4 +199,36 @@ func UpdateBenchmarkResults(results []BenchmarkResult) {
 	tableString := printTable(table)
 	modReadme := strings.Join([]string{readme[:start], tableString, readme[end:]}, "")
 	os.WriteFile(path, []byte(modReadme), 0644)
+}
+
+func Input(year, day int) []string {
+	fileName := fmt.Sprintf("./internal/aoc/year%d/input/day%s.in", year, FormatDay(day))
+	return readFile(fileName)
+}
+
+func ExampleInput(year, day, part int) []string {
+	var fileName string
+	if part == 0 {
+		fileName = fmt.Sprintf("./internal/aoc/year%d/example/day%s.in", year, FormatDay(day))
+	} else {
+		fileName = fmt.Sprintf("./internal/aoc/year%d/example/day%s-%d.in", year, FormatDay(day), part)
+	}
+
+	return readFile(fileName)
+}
+
+func TestInput(year, day int) []string {
+	fileName := fmt.Sprintf("../year%d/input/day%s.in", year, FormatDay(day))
+
+	return readFile(fileName)
+}
+
+func readFile(fileName string) []string {
+	b, err := os.ReadFile(fileName)
+	if err != nil {
+		logrus.Fatal(err)
+	}
+
+	lines := strings.Split(string(b), "\n")
+	return lines
 }

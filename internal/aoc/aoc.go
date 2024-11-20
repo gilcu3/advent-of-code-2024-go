@@ -1,16 +1,17 @@
 package aoc
 
 import (
+	"aocgen/internal/aoc/util"
 	"sort"
 
 	"github.com/sirupsen/logrus"
 )
 
 type Puzzle interface {
-	PartA([]string) string
-	PartB([]string) string
-	SampleA([]string)
-	SampleB([]string)
+	Part1([]string) string
+	Part2([]string) string
+	TestPart1()
+	TestPart2()
 }
 
 var puzzles = map[int]map[int]Puzzle{}
@@ -56,35 +57,35 @@ func Run(year, day, part int, p Puzzle, input []string, submitRun bool) {
 	}
 	var ans string
 	if part == 1 {
-		ans = p.PartA(input)
-		logrus.Infof("%d Day %d, Part A Result: %v", year, day, ans)
+		ans = p.Part1(input)
+		logrus.Infof("%d Day %d, Part 1 Result: %v", year, day, ans)
 	} else if part == 2 {
-		ans = p.PartB(input)
-		logrus.Infof("%d Day %d, Part B Result: %v", year, day, ans)
+		ans = p.Part2(input)
+		logrus.Infof("%d Day %d, Part 2 Result: %v", year, day, ans)
 	}
 	if submitRun {
 		Submit(year, day, part, ans)
 	}
 }
 
-func TestRun(year, day, part int, p Puzzle, input []string) {
+func TestRun(year, day, part int, p Puzzle) {
 	if p == nil {
 		logrus.Fatal("Failed to run empty puzzle")
 		return
 	}
 	if part == 1 {
-		p.SampleA(input)
+		p.TestPart1()
 	} else if part == 2 {
-		p.SampleB(input)
+		p.TestPart2()
 	}
 
 }
 
 func RunDay(year, day, part int, testRun, submitRun bool) {
 	if testRun {
-		TestRun(year, day, part, NewPuzzle(year, day), SampleInput(year, day))
+		TestRun(year, day, part, NewPuzzle(year, day))
 	} else {
-		Run(year, day, part, NewPuzzle(year, day), Input(year, day), submitRun)
+		Run(year, day, part, NewPuzzle(year, day), util.Input(year, day), submitRun)
 	}
 
 }

@@ -1,6 +1,7 @@
 package aoc
 
 import (
+	"aocgen/internal/aoc/util"
 	"bytes"
 	"errors"
 	"fmt"
@@ -27,7 +28,7 @@ func puzzlePath(year int) string {
 
 func puzzleFileName(year, day int) string {
 	path := puzzlePath(year)
-	return fmt.Sprintf("%s/day%s.go", path, FormatDay(day))
+	return fmt.Sprintf("%s/day%s.go", path, util.FormatDay(day))
 }
 
 func NewPuzzleFile(year, day int) {
@@ -44,19 +45,19 @@ func NewPuzzleFile(year, day int) {
 	tmpl := codegen.MustParse(string(puzzleTemplate))
 	if err := tmpl.CreateFile(fileName, map[string]any{
 		"Year": year,
-		"Day":  FormatDay(day),
+		"Day":  util.FormatDay(day),
 	}); err != nil {
 		logrus.Fatal(err)
 	}
 
-	RemoveFirstLine(fileName)
+	util.RemoveFirstLine(fileName)
 
 	logrus.Infof("Created file: %s", fileName)
 }
 
 func InitializePackage(year int) {
 	path := puzzlePath(year)
-	if err := CreateDirectory(path); err != nil {
+	if err := util.CreateDirectory(path); err != nil {
 		logrus.Fatal(err)
 	}
 }
@@ -114,7 +115,7 @@ func UpdateYearsFile() {
 		}
 		imports += fmt.Sprintf("\"aocgen/%s/year%d\"\n", aoc_path, year)
 		for _, day := range days {
-			correctPuzzleName := fmt.Sprintf("Day%s", FormatDay(day))
+			correctPuzzleName := fmt.Sprintf("Day%s", util.FormatDay(day))
 			puzzles += fmt.Sprintf("%d: year%d.%s{},\n", day, year, correctPuzzleName)
 			logrus.Debugf("Found puzzle file for %d-%d", year, day)
 		}
@@ -146,7 +147,7 @@ func UpdateBenchmarks(year int) {
 
 	benchmarks := ""
 
-	CreateDirectory(pathTests)
+	util.CreateDirectory(pathTests)
 	days := findDays(year)
 	if len(days) == 0 {
 		os.Remove(fileName)
@@ -170,7 +171,7 @@ func UpdateBenchmarks(year int) {
 	for _, day := range days {
 		var output bytes.Buffer
 		vars.Day = day
-		vars.FormatDay = FormatDay(day)
+		vars.FormatDay = util.FormatDay(day)
 		if err := t.Execute(&output, vars); err != nil {
 			logrus.Fatal(err)
 		}
@@ -192,11 +193,11 @@ func UpdateBenchmarks(year int) {
 }
 
 func RemoveDay(year, day int) {
-	sday := fmt.Sprintf("day%s", FormatDay(day))
+	sday := fmt.Sprintf("day%s", util.FormatDay(day))
 	files := []string{"desc/" + sday + ".md", "input/" + sday + ".in", "sample/" + sday + ".in", sday + ".go"}
 	path := puzzlePath(year)
 	for _, file := range files {
-		RemoveFile(path + "/" + file)
+		util.RemoveFile(path + "/" + file)
 	}
 }
 
@@ -205,7 +206,7 @@ func RemoveYear(year int) {
 		RemoveDay(year, day)
 	}
 	if _, err := os.Stat(puzzlePath(year)); err == nil {
-		RemoveFile(puzzlePath(year))
+		util.RemoveFile(puzzlePath(year))
 	}
 
 	UpdateBenchmarks(year)

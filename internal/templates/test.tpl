@@ -4,7 +4,9 @@ package tests
 import (
     "testing"
     "fmt"
+
     "aocgen/internal/aoc"
+    "aocgen/internal/aoc/util"
 )
 
 {{.Benchmarks}}

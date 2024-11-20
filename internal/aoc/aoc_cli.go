@@ -1,6 +1,7 @@
 package aoc
 
 import (
+	"aocgen/internal/aoc/util"
 	"fmt"
 	"os"
 	"os/exec"
@@ -29,46 +30,46 @@ func call_aoc_cli(args []string) string {
 }
 
 func getInputPath(year, day int) string {
-	return fmt.Sprintf("internal/aoc/year%d/input/day%s.in", year, FormatDay(day))
+	return fmt.Sprintf("internal/aoc/year%d/input/day%s.in", year, util.FormatDay(day))
 }
 
-func getSamplePath(year, day int) string {
-	return fmt.Sprintf("internal/aoc/year%d/sample/day%s.in", year, FormatDay(day))
+func getExamplePath(year, day int) string {
+	return fmt.Sprintf("internal/aoc/year%d/example/day%s.in", year, util.FormatDay(day))
 }
 
 func getDescPath(year, day int) string {
-	return fmt.Sprintf("internal/aoc/year%d/desc/day%s.md", year, FormatDay(day))
+	return fmt.Sprintf("internal/aoc/year%d/desc/day%s.md", year, util.FormatDay(day))
 }
 
 func createPuzzleDirs(year int) {
 	path0 := fmt.Sprintf("internal/aoc/year%d/input/", year)
-	path1 := fmt.Sprintf("internal/aoc/year%d/sample/", year)
+	path1 := fmt.Sprintf("internal/aoc/year%d/example/", year)
 	path2 := fmt.Sprintf("internal/aoc/year%d/desc/", year)
 	for _, path := range []string{path0, path1, path2} {
-		CreateDirectory(path)
+		util.CreateDirectory(path)
 	}
 }
 
-func createSampleFile(year, day int) {
-	sampleFileName := getSamplePath(year, day)
-	if _, err := os.Stat(sampleFileName); err != nil && err == os.ErrNotExist {
-		logrus.Infof("Sample file already exists: %s", sampleFileName)
+func createExampleFile(year, day int) {
+	exampleFileName := getExamplePath(year, day)
+	if _, err := os.Stat(exampleFileName); err != nil && err == os.ErrNotExist {
+		logrus.Infof("Example file already exists: %s", exampleFileName)
 		return
 	}
-	fSample, errSample := os.Create(sampleFileName)
-	if errSample != nil {
-		logrus.Fatal(errSample)
+	fExample, errExample := os.Create(exampleFileName)
+	if errExample != nil {
+		logrus.Fatal(errExample)
 	}
-	defer fSample.Close()
+	defer fExample.Close()
 
-	logrus.Infof("Generated empty sample file: %s", sampleFileName)
+	logrus.Infof("Generated empty example file: %s", exampleFileName)
 }
 
 func Download(year, day int) {
 	descPath := getDescPath(year, day)
 	inputPath := getInputPath(year, day)
 	createPuzzleDirs(year)
-	createSampleFile(year, day)
+	createExampleFile(year, day)
 	args := []string{"download", "--overwrite", "--input-file", inputPath, "--puzzle-file", descPath, "--year", strconv.Itoa(year), "--day", strconv.Itoa(day)}
 	call_aoc_cli(args)
 	logrus.Infof("🎄 Successfully wrote input to %s.", inputPath)
