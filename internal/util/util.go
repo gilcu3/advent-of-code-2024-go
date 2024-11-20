@@ -120,9 +120,9 @@ func ParseBenchMark(output string) []BenchmarkResult {
 		if matches := re.FindStringSubmatch(line); matches != nil {
 			year, _ := strconv.Atoi(matches[1])
 			day, _ := strconv.Atoi(matches[2])
-			part := 0
-			if matches[3] == "B" {
-				part = 1
+			part := 1
+			if matches[3] == "2" {
+				part = 2
 			}
 			// Parse the time as an int64
 			var time float64
@@ -140,7 +140,7 @@ func parseResults(results []BenchmarkResult) map[int][]*float64 {
 		table[i] = []*float64{nil, nil}
 	}
 	for _, r := range results {
-		table[r.Day][r.Part] = &r.Time
+		table[r.Day][r.Part-1] = &r.Time
 	}
 	return table
 }
