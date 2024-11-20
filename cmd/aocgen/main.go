@@ -36,7 +36,7 @@ var benchCmd = &cobra.Command{
 			benchArgRegex += util.FormatDay(day)
 		}
 
-		cmdArgs := fmt.Sprintf("go test -bench %s aocgen/internal/tests", benchArgRegex)
+		cmdArgs := fmt.Sprintf("go test -bench %s aocgen/%s", benchArgRegex, util.TestsPath)
 		c := exec.Command("bash", "-c", cmdArgs)
 		out, err := c.Output()
 		if err != nil {

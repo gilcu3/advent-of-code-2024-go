@@ -15,6 +15,7 @@ import (
 const PuzzlePath_tpl = "internal/year%d"
 const TemplatePath = "internal/templates"
 const YearsFile = "internal/aoc/years.go"
+const TestsPath = "internal/tests"
 
 func CreateDirectory(path string) error {
 	if _, err := os.Stat(path); err == nil || !errors.Is(err, os.ErrNotExist) {

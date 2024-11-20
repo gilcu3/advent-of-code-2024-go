@@ -138,12 +138,11 @@ func UpdateYearsFile() {
 }
 
 func UpdateBenchmarks(year int) {
-	pathTests := "internal/tests"
-	fileName := fmt.Sprintf("%s/year%d_test.go", pathTests, year)
+	fileName := fmt.Sprintf("%s/year%d_test.go", util.TestsPath, year)
 
 	benchmarks := ""
 
-	util.CreateDirectory(pathTests)
+	util.CreateDirectory(util.TestsPath)
 	days := findDays(year)
 	if len(days) == 0 {
 		os.Remove(fileName)
@@ -213,5 +212,3 @@ func RemoveAll() {
 		RemoveYear(year)
 	}
 }
-
-// FormatDay zero pads single-digit days
