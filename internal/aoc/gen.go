@@ -127,7 +127,6 @@ func UpdateYearsFile() {
 	if err != nil {
 		logrus.Fatal(err)
 	}
-	logrus.Infof("Deleted file: %s", util.YearsFile)
 
 	if err := tmpl.CreateFile(util.YearsFile, map[string]interface{}{
 		"Imports": imports,
@@ -135,6 +134,7 @@ func UpdateYearsFile() {
 	}); err != nil {
 		logrus.Fatal(err)
 	}
+	logrus.Infof("Updated file: %s", util.YearsFile)
 }
 
 func UpdateBenchmarks(year int) {
@@ -185,7 +185,7 @@ func UpdateBenchmarks(year int) {
 		logrus.Fatal(err)
 	}
 
-	logrus.Infof("Created file: %s", fileName)
+	logrus.Infof("Updated file: %s", fileName)
 }
 
 func RemoveDay(year, day int) {

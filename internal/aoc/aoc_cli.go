@@ -52,7 +52,7 @@ func createPuzzleDirs(year int) {
 
 func createExampleFile(year, day int) {
 	exampleFileName := getExamplePath(year, day)
-	if _, err := os.Stat(exampleFileName); err != nil && err == os.ErrNotExist {
+	if _, err := os.Stat(exampleFileName); err == nil {
 		logrus.Infof("Example file already exists: %s", exampleFileName)
 		return
 	}
