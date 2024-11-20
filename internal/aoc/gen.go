@@ -1,7 +1,7 @@
 package aoc
 
 import (
-	"aocgen/internal/aoc/util"
+	"aocgen/internal/util"
 	"bytes"
 	"errors"
 	"fmt"
@@ -16,14 +16,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const aoc_path = "internal/aoc"
-const template_path = "internal/templates"
-const yearsFile = aoc_path + "/" + "years.go"
-
 var validPuzzleFile = regexp.MustCompile(`^day[0-3][0-9]$`)
 
 func puzzlePath(year int) string {
-	return fmt.Sprintf("%s/year%d", aoc_path, year)
+	return fmt.Sprintf("internal/year%d", year)
 }
 
 func puzzleFileName(year, day int) string {
@@ -38,7 +34,7 @@ func NewPuzzleFile(year, day int) {
 		return
 	}
 
-	puzzleTemplate, err := os.ReadFile(template_path + "/" + "puzzle.tpl")
+	puzzleTemplate, err := os.ReadFile(util.TemplatePath + "/" + "puzzle.tpl")
 	if err != nil {
 		logrus.Fatal(err)
 	}
@@ -64,7 +60,7 @@ func InitializePackage(year int) {
 
 func findYears() []int {
 
-	dirs, err := os.ReadDir(aoc_path)
+	dirs, err := os.ReadDir("internal")
 	if err != nil {
 		logrus.Fatal(err)
 		return []int{}
@@ -83,7 +79,7 @@ func findYears() []int {
 }
 
 func findDays(year int) []int {
-	pathYear := fmt.Sprintf("%s/year%d", aoc_path, year)
+	pathYear := fmt.Sprintf("internal/year%d", year)
 	files, err := os.ReadDir(pathYear)
 	if err != nil {
 		return []int{}
@@ -113,7 +109,7 @@ func UpdateYearsFile() {
 		if len(days) == 0 {
 			continue
 		}
-		imports += fmt.Sprintf("\"aocgen/%s/year%d\"\n", aoc_path, year)
+		imports += fmt.Sprintf("\"aocgen/internal/year%d\"\n", year)
 		for _, day := range days {
 			correctPuzzleName := fmt.Sprintf("Day%s", util.FormatDay(day))
 			puzzles += fmt.Sprintf("%d: year%d.%s{},\n", day, year, correctPuzzleName)
@@ -121,19 +117,19 @@ func UpdateYearsFile() {
 		}
 		inits += fmt.Sprintf("Register(%d, map[int]Puzzle{%s})", year, puzzles)
 	}
-	initMainTemplate, err := os.ReadFile(template_path + "/" + "years.tpl")
+	initMainTemplate, err := os.ReadFile(util.TemplatePath + "/" + "years.tpl")
 	if err != nil {
 		logrus.Fatal(err)
 	}
 	tmpl := codegen.MustParse(string(initMainTemplate))
 
-	err = os.Remove(yearsFile)
+	err = os.Remove(util.YearsFile)
 	if err != nil {
 		logrus.Fatal(err)
 	}
-	logrus.Infof("Deleted file: %s", yearsFile)
+	logrus.Infof("Deleted file: %s", util.YearsFile)
 
-	if err := tmpl.CreateFile(yearsFile, map[string]interface{}{
+	if err := tmpl.CreateFile(util.YearsFile, map[string]interface{}{
 		"Imports": imports,
 		"Inits":   inits,
 	}); err != nil {
@@ -142,7 +138,7 @@ func UpdateYearsFile() {
 }
 
 func UpdateBenchmarks(year int) {
-	pathTests := fmt.Sprintf("%s/tests", aoc_path)
+	pathTests := "internal/tests"
 	fileName := fmt.Sprintf("%s/year%d_test.go", pathTests, year)
 
 	benchmarks := ""
@@ -153,7 +149,7 @@ func UpdateBenchmarks(year int) {
 		os.Remove(fileName)
 		return
 	}
-	singleBenchTemplate, err := os.ReadFile(template_path + "/" + "bench_function.tpl")
+	singleBenchTemplate, err := os.ReadFile(util.TemplatePath + "/" + "bench_function.tpl")
 	if err != nil {
 		logrus.Fatal(err)
 	}
@@ -177,7 +173,7 @@ func UpdateBenchmarks(year int) {
 		}
 		benchmarks += output.String()
 	}
-	benchmarkingTemplate, err := os.ReadFile(template_path + "/" + "test.tpl")
+	benchmarkingTemplate, err := os.ReadFile(util.TemplatePath + "/" + "test.tpl")
 	if err != nil {
 		logrus.Fatal(err)
 	}
@@ -194,7 +190,7 @@ func UpdateBenchmarks(year int) {
 
 func RemoveDay(year, day int) {
 	sday := fmt.Sprintf("day%s", util.FormatDay(day))
-	files := []string{"desc/" + sday + ".md", "input/" + sday + ".in", "sample/" + sday + ".in", sday + ".go"}
+	files := []string{"desc/" + sday + ".md", "input/" + sday + ".in", "example/" + sday + ".in", sday + ".go"}
 	path := puzzlePath(year)
 	for _, file := range files {
 		util.RemoveFile(path + "/" + file)

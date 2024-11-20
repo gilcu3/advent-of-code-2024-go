@@ -4,7 +4,7 @@ package year{{.Year}}
 import (
     "fmt"
 
-    "aocgen/internal/aoc/util"
+    "aocgen/internal/util"
 )
 
 type Day{{.Day}} struct{}

@@ -6,7 +6,7 @@ import (
     "fmt"
 
     "aocgen/internal/aoc"
-    "aocgen/internal/aoc/util"
+    "aocgen/internal/util"
 )
 
 {{.Benchmarks}}

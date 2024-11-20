@@ -12,6 +12,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const PuzzlePath_tpl = "internal/year%d"
+const TemplatePath = "internal/templates"
+const YearsFile = "internal/aoc/years.go"
+
 func CreateDirectory(path string) error {
 	if _, err := os.Stat(path); err == nil || !errors.Is(err, os.ErrNotExist) {
 		logrus.Infof("Directory already exists: %s", path)
@@ -150,7 +154,7 @@ const headerTable = `
 
 const marker = "<!--- benchmarking table --->"
 
-func printTable(table map[int][]*float64) string {
+func printTable(table map[int][]*float64, year int) string {
 	var result string
 	result = ""
 	result += marker
@@ -170,7 +174,7 @@ func printTable(table map[int][]*float64) string {
 			resPart2 = humanTime(*part2)
 		}
 		if part1 != nil || part2 != nil {
-			result += fmt.Sprintf("| [Day %d](./internal/aoc/day%s.go) | `%s` | `%s` |\n", i, FormatDay(i), resPart1, resPart2)
+			result += fmt.Sprintf("| [Day %d](./internal/year%d/day%s.go) | `%s` | `%s` |\n", i, year, FormatDay(i), resPart1, resPart2)
 		}
 
 	}
@@ -179,7 +183,7 @@ func printTable(table map[int][]*float64) string {
 	return result
 }
 
-func UpdateBenchmarkResults(results []BenchmarkResult) {
+func UpdateBenchmarkResults(results []BenchmarkResult, year int) {
 	path := "README.md"
 	readmeBytes, _ := os.ReadFile(path)
 	readme := string(readmeBytes)
@@ -196,22 +200,22 @@ func UpdateBenchmarkResults(results []BenchmarkResult) {
 	}
 	end += 2*len(marker) + start
 	table := parseResults(results)
-	tableString := printTable(table)
+	tableString := printTable(table, year)
 	modReadme := strings.Join([]string{readme[:start], tableString, readme[end:]}, "")
 	os.WriteFile(path, []byte(modReadme), 0644)
 }
 
 func Input(year, day int) []string {
-	fileName := fmt.Sprintf("./internal/aoc/year%d/input/day%s.in", year, FormatDay(day))
+	fileName := fmt.Sprintf(PuzzlePath_tpl+"/input/day%s.in", year, FormatDay(day))
 	return readFile(fileName)
 }
 
 func ExampleInput(year, day, part int) []string {
 	var fileName string
 	if part == 0 {
-		fileName = fmt.Sprintf("./internal/aoc/year%d/example/day%s.in", year, FormatDay(day))
+		fileName = fmt.Sprintf(PuzzlePath_tpl+"/example/day%s.in", year, FormatDay(day))
 	} else {
-		fileName = fmt.Sprintf("./internal/aoc/year%d/example/day%s-%d.in", year, FormatDay(day), part)
+		fileName = fmt.Sprintf(PuzzlePath_tpl+"/example/day%s-%d.in", year, FormatDay(day), part)
 	}
 
 	return readFile(fileName)

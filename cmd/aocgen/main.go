@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"aocgen/internal/aoc"
-	"aocgen/internal/aoc/util"
+	"aocgen/internal/util"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -36,7 +36,7 @@ var benchCmd = &cobra.Command{
 			benchArgRegex += util.FormatDay(day)
 		}
 
-		cmdArgs := fmt.Sprintf("go test -bench %s aocgen/internal/aoc/tests", benchArgRegex)
+		cmdArgs := fmt.Sprintf("go test -bench %s aocgen/internal/tests", benchArgRegex)
 		c := exec.Command("bash", "-c", cmdArgs)
 		out, err := c.Output()
 		if err != nil {
@@ -46,7 +46,7 @@ var benchCmd = &cobra.Command{
 
 		if updateReadme {
 			results := util.ParseBenchMark(string(out))
-			util.UpdateBenchmarkResults(results)
+			util.UpdateBenchmarkResults(results, year)
 		}
 	},
 }

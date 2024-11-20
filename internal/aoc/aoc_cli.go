@@ -1,7 +1,7 @@
 package aoc
 
 import (
-	"aocgen/internal/aoc/util"
+	"aocgen/internal/util"
 	"fmt"
 	"os"
 	"os/exec"
@@ -30,21 +30,21 @@ func call_aoc_cli(args []string) string {
 }
 
 func getInputPath(year, day int) string {
-	return fmt.Sprintf("internal/aoc/year%d/input/day%s.in", year, util.FormatDay(day))
+	return fmt.Sprintf(util.PuzzlePath_tpl+"/input/day%s.in", year, util.FormatDay(day))
 }
 
 func getExamplePath(year, day int) string {
-	return fmt.Sprintf("internal/aoc/year%d/example/day%s.in", year, util.FormatDay(day))
+	return fmt.Sprintf(util.PuzzlePath_tpl+"/example/day%s.in", year, util.FormatDay(day))
 }
 
 func getDescPath(year, day int) string {
-	return fmt.Sprintf("internal/aoc/year%d/desc/day%s.md", year, util.FormatDay(day))
+	return fmt.Sprintf(util.PuzzlePath_tpl+"/desc/day%s.md", year, util.FormatDay(day))
 }
 
 func createPuzzleDirs(year int) {
-	path0 := fmt.Sprintf("internal/aoc/year%d/input/", year)
-	path1 := fmt.Sprintf("internal/aoc/year%d/example/", year)
-	path2 := fmt.Sprintf("internal/aoc/year%d/desc/", year)
+	path0 := fmt.Sprintf(util.PuzzlePath_tpl+"/input/", year)
+	path1 := fmt.Sprintf(util.PuzzlePath_tpl+"/example/", year)
+	path2 := fmt.Sprintf(util.PuzzlePath_tpl+"/desc/", year)
 	for _, path := range []string{path0, path1, path2} {
 		util.CreateDirectory(path)
 	}

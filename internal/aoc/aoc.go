@@ -1,7 +1,7 @@
 package aoc
 
 import (
-	"aocgen/internal/aoc/util"
+	"aocgen/internal/util"
 	"sort"
 
 	"github.com/sirupsen/logrus"
