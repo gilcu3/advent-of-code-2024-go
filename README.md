@@ -16,9 +16,9 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Go](https://go.dev
 
 | Day | Part 1 | Part 2 |
 | :---: | :---: | :---:  |
-| [Day 1](./internal/year2023/day01.go) | `266.300ns` | `262.500ns` |
+| [Day 1](./internal/year2024/day01.go) | `195.596µs` | `245.867µs` |
 
-**Total: 528.800ns**
+**Total: 441.463µs**
 <!--- benchmarking table --->
 
 ---

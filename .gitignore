@@ -1,2 +1,4 @@
 bin/aocgen
-internal/year*/{desc,input,example}
+internal/year*/desc
+internal/year*/input
+internal/year*/example
