@@ -9,5 +9,6 @@ func RegisterYears() {
 	Register(2024, map[int]Puzzle{1: year2024.Day01{},
 		2: year2024.Day02{},
 		3: year2024.Day03{},
+		4: year2024.Day04{},
 	})
 }
