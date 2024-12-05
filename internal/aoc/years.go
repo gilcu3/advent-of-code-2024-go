@@ -10,5 +10,6 @@ func RegisterYears() {
 		2: year2024.Day02{},
 		3: year2024.Day03{},
 		4: year2024.Day04{},
+		5: year2024.Day05{},
 	})
 }
