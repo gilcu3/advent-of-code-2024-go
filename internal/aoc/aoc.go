@@ -56,10 +56,11 @@ func Run(year, day, part int, p Puzzle, input []string, submitRun bool) {
 		return
 	}
 	var ans string
-	if part == 1 {
+	if part == 1 || part == 0 {
 		ans = p.Part1(input)
 		logrus.Infof("%d Day %d, Part 1 Result: %v", year, day, ans)
-	} else if part == 2 {
+	}
+	if part == 2 || part == 0 {
 		ans = p.Part2(input)
 		logrus.Infof("%d Day %d, Part 2 Result: %v", year, day, ans)
 	}
@@ -73,9 +74,10 @@ func TestRun(year, day, part int, p Puzzle) {
 		logrus.Fatal("Failed to run empty puzzle")
 		return
 	}
-	if part == 1 {
+	if part == 1 || part == 0 {
 		p.TestPart1()
-	} else if part == 2 {
+	}
+	if part == 2 || part == 0 {
 		p.TestPart2()
 	}
 

@@ -135,7 +135,7 @@ func ParseBenchMark(output string) []BenchmarkResult {
 	return benchmarks
 }
 
-func parseResults(results []BenchmarkResult) map[int][]*float64 {
+func ParseResults(results []BenchmarkResult) map[int][]*float64 {
 	table := make(map[int][]*float64)
 	for i := 1; i <= 25; i++ {
 		table[i] = []*float64{nil, nil}
@@ -155,7 +155,7 @@ const headerTable = `
 
 const marker = "<!--- benchmarking table --->"
 
-func printTable(table map[int][]*float64, year int) string {
+func PrintTable(table map[int][]*float64, year int) string {
 	var result string
 	result = ""
 	result += marker
@@ -184,7 +184,7 @@ func printTable(table map[int][]*float64, year int) string {
 	return result
 }
 
-func UpdateBenchmarkResults(results []BenchmarkResult, year int) {
+func UpdateBenchmarkResults(results []BenchmarkResult, tableString string, year int) {
 	path := "README.md"
 	readmeBytes, _ := os.ReadFile(path)
 	readme := string(readmeBytes)
@@ -200,8 +200,7 @@ func UpdateBenchmarkResults(results []BenchmarkResult, year int) {
 		return
 	}
 	end += 2*len(marker) + start
-	table := parseResults(results)
-	tableString := printTable(table, year)
+	logrus.Infof(tableString)
 	modReadme := strings.Join([]string{readme[:start], tableString, readme[end:]}, "")
 	os.WriteFile(path, []byte(modReadme), 0644)
 }

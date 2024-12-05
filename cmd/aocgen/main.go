@@ -42,11 +42,13 @@ var benchCmd = &cobra.Command{
 		if err != nil {
 			logrus.Error(err)
 		}
-		println(string(out))
+		results := util.ParseBenchMark(string(out))
+		table := util.ParseResults(results)
+		tableString := util.PrintTable(table, year)
+		logrus.Info("\n" + tableString)
 
 		if updateReadme {
-			results := util.ParseBenchMark(string(out))
-			util.UpdateBenchmarkResults(results, year)
+			util.UpdateBenchmarkResults(results, tableString, year)
 		}
 	},
 }
@@ -171,12 +173,12 @@ var runCmd = &cobra.Command{
 			return errors.New("cannot test and submit at the same time")
 		}
 		if year <= 0 {
-			return errors.New("invalid year")
+			year = time.Now().Year()
 		}
 		if day <= 0 {
-			return errors.New("invalid day")
+			day = time.Now().Day()
 		}
-		if part <= 0 {
+		if part < 0 || part > 2 {
 			return errors.New("invalid part")
 		}
 		return nil
