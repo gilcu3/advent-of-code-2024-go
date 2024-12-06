@@ -21,13 +21,14 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Go](https://go.dev
 
 | Day | Part 1 | Part 2 |
 | :---: | :---: | :---:  |
-| [Day 1](./internal/year2024/day01.go) | `190.580µs` | `285.651µs` |
-| [Day 2](./internal/year2024/day02.go) | `250.642µs` | `596.426µs` |
-| [Day 3](./internal/year2024/day03.go) | `383.856µs` | `699.089µs` |
-| [Day 4](./internal/year2024/day04.go) | `1.297ms` | `1.235ms` |
-| [Day 5](./internal/year2024/day05.go) | `22.509ms` | `371.353ms` |
+| [Day 1](./internal/year2024/day01.go) | `195.650µs` | `265.276µs` |
+| [Day 2](./internal/year2024/day02.go) | `257.620µs` | `501.313µs` |
+| [Day 3](./internal/year2024/day03.go) | `363.416µs` | `704.161µs` |
+| [Day 4](./internal/year2024/day04.go) | `1.323ms` | `1.272ms` |
+| [Day 5](./internal/year2024/day05.go) | `23.409ms` | `383.265ms` |
+| [Day 6](./internal/year2024/day06.go) | `241.988µs` | `682.177ms` |
 
-**Total: 398.799ms**
+**Total: 1.094s**
 <!--- benchmarking table --->
 
 ---
