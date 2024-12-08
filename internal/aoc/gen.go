@@ -42,6 +42,7 @@ func NewPuzzleFile(year, day int) {
 	if err := tmpl.CreateFile(fileName, map[string]any{
 		"Year": year,
 		"Day":  util.FormatDay(day),
+		"UDay": day,
 	}); err != nil {
 		logrus.Fatal(err)
 	}

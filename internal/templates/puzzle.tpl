@@ -35,7 +35,7 @@ func (p Day{{.Day}}) Part2(lines []string) string {
 
 func (p Day{{.Day}}) TestPart1() {
     const ansExample1 = ""
-    input := util.ExampleInput({{.Year}}, {{.Day}}, 0)
+    input := util.ExampleInput({{.Year}}, {{.UDay}}, 0)
     ans := p.Part1(input)
     if ans == fmt.Sprint(nil) {
     } else if ansExample1 == "" {
@@ -49,7 +49,7 @@ func (p Day{{.Day}}) TestPart1() {
 
 func (p Day{{.Day}}) TestPart2() {
     const ansExample2 = ""
-    input := util.ExampleInput({{.Year}}, {{.Day}}, 0)
+    input := util.ExampleInput({{.Year}}, {{.UDay}}, 0)
     ans := p.Part2(input)
     if ans == fmt.Sprint(nil) {
     } else if ansExample2 == "" {
