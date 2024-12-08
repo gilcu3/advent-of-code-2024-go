@@ -156,3 +156,24 @@ func Benchmark202407(b *testing.B) {
 		})
 	}
 }
+func Benchmark202408(b *testing.B) {
+	aoc.RegisterYears()
+	input := util.TestInput(2024, 8)
+	p := aoc.NewPuzzle(2024, 8)
+	if p.Part1(input) != fmt.Sprint(nil) {
+		b.Run("Part1", func(b *testing.B) {
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				p.Part1(input)
+			}
+		})
+	}
+	if p.Part2(input) != fmt.Sprint(nil) {
+		b.Run("Part2", func(b *testing.B) {
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				p.Part2(input)
+			}
+		})
+	}
+}
