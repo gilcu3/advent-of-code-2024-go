@@ -28,20 +28,21 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Go](https://go.dev
 
 | Day | Part 1 | Part 2 |
 | :---: | :---: | :---:  |
-| [Day 1](./internal/year2024/day01.go) | `178.302µs` | `279.252µs` |
-| [Day 2](./internal/year2024/day02.go) | `245.286µs` | `471.741µs` |
-| [Day 3](./internal/year2024/day03.go) | `376.055µs` | `731.156µs` |
-| [Day 4](./internal/year2024/day04.go) | `1.436ms` | `1.314ms` |
-| [Day 5](./internal/year2024/day05.go) | `24.156ms` | `395.857ms` |
-| [Day 6](./internal/year2024/day06.go) | `268.790µs` | `699.427ms` |
-| [Day 7](./internal/year2024/day07.go) | `9.555ms` | `754.681ms` |
-| [Day 8](./internal/year2024/day08.go) | `46.569µs` | `69.109µs` |
-| [Day 9](./internal/year2024/day09.go) | `416.544µs` | `59.434ms` |
-| [Day 10](./internal/year2024/day10.go) | `1.513ms` | `221.222µs` |
-| [Day 11](./internal/year2024/day11.go) | `8.739ms` | `7.167µs` |
-| [Day 12](./internal/year2024/day12.go) | `1.194ms` | `1.125ms` |
+| [Day 1](./internal/year2024/day01.go) | `182.817µs` | `257.806µs` |
+| [Day 2](./internal/year2024/day02.go) | `239.129µs` | `572.252µs` |
+| [Day 3](./internal/year2024/day03.go) | `362.334µs` | `728.405µs` |
+| [Day 4](./internal/year2024/day04.go) | `1.390ms` | `1.313ms` |
+| [Day 5](./internal/year2024/day05.go) | `24.067ms` | `376.873ms` |
+| [Day 6](./internal/year2024/day06.go) | `265.911µs` | `693.900ms` |
+| [Day 7](./internal/year2024/day07.go) | `9.614ms` | `760.792ms` |
+| [Day 8](./internal/year2024/day08.go) | `46.777µs` | `69.634µs` |
+| [Day 9](./internal/year2024/day09.go) | `421.512µs` | `59.309ms` |
+| [Day 10](./internal/year2024/day10.go) | `1.532ms` | `223.650µs` |
+| [Day 11](./internal/year2024/day11.go) | `8.649ms` | `8.897µs` |
+| [Day 12](./internal/year2024/day12.go) | `1.194ms` | `1.120ms` |
+| [Day 13](./internal/year2024/day13.go) | `396.389µs` | `130.837µs` |
 
-**Total: 1.962s**
+**Total: 1.944s**
 <!--- benchmarking table --->
 
 ---
