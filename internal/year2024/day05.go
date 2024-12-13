@@ -15,8 +15,18 @@ func (p Day05) Part1(lines []string) string {
 	sec := 0
 	M := make([][]int, 0)
 	ans := 0
+	mx := 0
+	MM := make([]map[int]bool, 0)
 	for _, line := range lines {
 		if len(line) == 0 {
+			if sec == 0 {
+				for range mx {
+					MM = append(MM, make(map[int]bool))
+				}
+				for _, r := range M {
+					MM[r[0]][r[1]] = true
+				}
+			}
 			sec += 1
 			continue
 		}
@@ -24,6 +34,7 @@ func (p Day05) Part1(lines []string) string {
 			rule := strings.Split(line, "|")
 			m1, _ := strconv.Atoi(rule[0])
 			m2, _ := strconv.Atoi(rule[1])
+			mx = max(mx, m1+1, m2+1)
 			M = append(M, []int{m1, m2})
 		} else if sec == 1 {
 			pp := strings.Split(line, ",")
@@ -35,13 +46,8 @@ func (p Day05) Part1(lines []string) string {
 			pos := true
 			for i, p1 := range ppn {
 				for _, p2 := range ppn[i+1:] {
-					for _, r := range M {
-						if r[0] == p2 && r[1] == p1 {
-							pos = false
-							break
-						}
-					}
-					if !pos {
+					if _, exists := MM[p2][p1]; exists {
+						pos = false
 						break
 					}
 				}
@@ -57,7 +63,7 @@ func (p Day05) Part1(lines []string) string {
 	return fmt.Sprint(ans)
 }
 
-var M2 = [][]int{}
+var MM2 []map[int]bool
 
 type CustomInt []int
 
@@ -66,10 +72,8 @@ func (w CustomInt) Len() int {
 }
 
 func (w CustomInt) Less(i, j int) bool {
-	for _, r := range M2 {
-		if r[0] == w[i] && r[1] == w[j] {
-			return true
-		}
+	if _, exists := MM2[w[i]][w[j]]; exists {
+		return true
 	}
 	return false
 }
@@ -80,9 +84,19 @@ func (w CustomInt) Swap(i, j int) {
 
 func (p Day05) Part2(lines []string) string {
 	sec := 0
+	M2 := make([][]int, 0)
 	ans := 0
+	mx := 0
 	for _, line := range lines {
 		if len(line) == 0 {
+			if sec == 0 {
+				for range mx {
+					MM2 = append(MM2, make(map[int]bool))
+				}
+				for _, r := range M2 {
+					MM2[r[0]][r[1]] = true
+				}
+			}
 			sec += 1
 			continue
 		}
@@ -90,6 +104,7 @@ func (p Day05) Part2(lines []string) string {
 			rule := strings.Split(line, "|")
 			m1, _ := strconv.Atoi(rule[0])
 			m2, _ := strconv.Atoi(rule[1])
+			mx = max(mx, m1+1, m2+1)
 			M2 = append(M2, []int{m1, m2})
 		} else if sec == 1 {
 			pp := strings.Split(line, ",")
@@ -101,13 +116,8 @@ func (p Day05) Part2(lines []string) string {
 			pos := true
 			for i, p1 := range ppn {
 				for _, p2 := range ppn[i+1:] {
-					for _, r := range M2 {
-						if r[0] == p2 && r[1] == p1 {
-							pos = false
-							break
-						}
-					}
-					if !pos {
+					if _, exists := MM2[p2][p1]; exists {
+						pos = false
 						break
 					}
 				}

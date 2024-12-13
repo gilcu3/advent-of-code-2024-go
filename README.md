@@ -33,7 +33,7 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Go](https://go.dev
 | [Day 2](./internal/year2024/day02.go) | `239.129µs` | `572.252µs` |
 | [Day 3](./internal/year2024/day03.go) | `362.334µs` | `728.405µs` |
 | [Day 4](./internal/year2024/day04.go) | `1.390ms` | `1.313ms` |
-| [Day 5](./internal/year2024/day05.go) | `24.067ms` | `376.873ms` |
+| [Day 5](./internal/year2024/day05.go) | `536.276µs` | `629.213µs` |
 | [Day 6](./internal/year2024/day06.go) | `265.911µs` | `693.900ms` |
 | [Day 7](./internal/year2024/day07.go) | `9.614ms` | `760.792ms` |
 | [Day 8](./internal/year2024/day08.go) | `46.777µs` | `69.634µs` |
@@ -43,7 +43,7 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Go](https://go.dev
 | [Day 12](./internal/year2024/day12.go) | `1.194ms` | `1.120ms` |
 | [Day 13](./internal/year2024/day13.go) | `396.389µs` | `130.837µs` |
 
-**Total: 1.944s**
+**Total: 1.544s**
 <!--- benchmarking table --->
 
 ---
