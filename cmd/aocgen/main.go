@@ -44,11 +44,11 @@ var benchCmd = &cobra.Command{
 		}
 		results := util.ParseBenchMark(string(out))
 		table := util.ParseResults(results)
-		tableString := util.PrintTable(table, year)
-		logrus.Info("\n" + tableString)
 
 		if updateReadme {
-			util.UpdateBenchmarkResults(results, tableString, year)
+			util.UpdateBenchmarkResults(results, table, year)
+		} else {
+			logrus.Info("\n", util.PrintTable(table, year))
 		}
 	},
 }

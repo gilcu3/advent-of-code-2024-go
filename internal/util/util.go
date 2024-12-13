@@ -110,6 +110,25 @@ func humanTime(ns float64) string {
 	}
 }
 
+func fromHumanTime(tt string) float64 {
+	ans := 0.0
+	if strings.HasSuffix(tt, "ns") {
+		ans, _ = strconv.ParseFloat(tt[:len(tt)-2], 64)
+	} else if strings.HasSuffix(tt, "µs") {
+		ss, _ := strings.CutSuffix(tt, "µs")
+		ans, _ = strconv.ParseFloat(ss, 64)
+		ans *= 1000
+	} else if strings.HasSuffix(tt, "ms") {
+		ans, _ = strconv.ParseFloat(tt[:len(tt)-2], 64)
+		ans *= 1000000
+	} else if strings.HasSuffix(tt, "s") {
+		ans, _ = strconv.ParseFloat(tt[:len(tt)-1], 64)
+		ans *= 1000000000
+	}
+
+	return ans
+}
+
 func ParseBenchMark(output string) []BenchmarkResult {
 	var benchmarks []BenchmarkResult
 
@@ -125,9 +144,7 @@ func ParseBenchMark(output string) []BenchmarkResult {
 			if matches[3] == "2" {
 				part = 2
 			}
-			// Parse the time as an int64
-			var time float64
-			fmt.Sscanf(matches[4], "%f", &time)
+			time, _ := strconv.ParseFloat(matches[4], 64)
 
 			benchmarks = append(benchmarks, BenchmarkResult{year, day, part, time})
 		}
@@ -184,7 +201,28 @@ func PrintTable(table map[int][]*float64, year int) string {
 	return result
 }
 
-func UpdateBenchmarkResults(results []BenchmarkResult, tableString string, year int) {
+func ExtractTable(tableString string) map[int][]*float64 {
+	table := make(map[int][]*float64)
+	for i := 1; i <= 25; i++ {
+		table[i] = []*float64{nil, nil}
+	}
+	lines := strings.Split(tableString, "\n")
+
+	re := regexp.MustCompile(`^\| \[Day (\d+)\][^\|]*\| .(\d+(?:\.\d+)?.?s). \| .(\d+(?:\.\d+)?.?s). \|$`)
+
+	for _, line := range lines {
+		if matches := re.FindStringSubmatch(line); matches != nil {
+			day, _ := strconv.Atoi(matches[1])
+			p1 := fromHumanTime(matches[2])
+			p2 := fromHumanTime(matches[3])
+			table[day] = []*float64{&p1, &p2}
+		}
+	}
+	return table
+}
+
+func UpdateBenchmarkResults(results []BenchmarkResult, table map[int][]*float64, year int) {
+
 	path := "README.md"
 	readmeBytes, _ := os.ReadFile(path)
 	readme := string(readmeBytes)
@@ -200,7 +238,14 @@ func UpdateBenchmarkResults(results []BenchmarkResult, tableString string, year 
 		return
 	}
 	end += 2*len(marker) + start
-	logrus.Infof(tableString)
+	table0 := ExtractTable(readme[start:end])
+	for i := range 25 {
+		if table[i+1][0] != nil {
+			table0[i+1] = table[i+1]
+		}
+	}
+	tableString := PrintTable(table0, year)
+	logrus.Infof("\n" + tableString)
 	modReadme := strings.Join([]string{readme[:start], tableString, readme[end:]}, "")
 	os.WriteFile(path, []byte(modReadme), 0644)
 }
