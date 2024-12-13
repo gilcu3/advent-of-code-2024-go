@@ -2,6 +2,7 @@ package year2024
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 
@@ -9,6 +10,27 @@ import (
 )
 
 type Day07 struct{}
+
+var dd1 []map[int]bool
+
+func rec1(ar []int, target, i int) bool {
+	if i == -1 {
+		return target == 0
+	}
+	if target < 0 {
+		return false
+	}
+	if ans, exists := dd1[i][target]; exists {
+		return ans
+	}
+	ans := false
+	ans = ans || rec1(ar, target-ar[i], i-1)
+	if !ans && target%ar[i] == 0 {
+		ans = ans || rec1(ar, target/ar[i], i-1)
+	}
+	dd1[i][target] = ans
+	return ans
+}
 
 func (p Day07) Part1(lines []string) string {
 	ans := 0
@@ -27,22 +49,46 @@ func (p Day07) Part1(lines []string) string {
 				row = append(row, cur)
 			}
 		}
-		for m := range 1 << (len(row) - 1) {
-			cur := row[0]
-			for i := 1; i < len(row); i++ {
-				if (1<<(i-1))&m != 0 {
-					cur += row[i]
-				} else {
-					cur *= row[i]
-				}
-			}
-			if cur == target {
-				ans += target
-				break
-			}
+		dd1 = make([]map[int]bool, len(row))
+		for i := range len(row) {
+			dd1[i] = make(map[int]bool)
+		}
+		if rec1(row, target, len(row)-1) {
+			ans += target
 		}
 	}
 	return fmt.Sprint(ans)
+}
+
+var dd2 []map[int]bool
+
+func p10(a int) int {
+	return int(math.Pow10(len(strconv.Itoa(a))))
+}
+
+func p7rec2(ar []int, target, i int) bool {
+	if i == -1 {
+		return target == 0
+	}
+	if target < 0 {
+		return false
+	}
+	if ans, exists := dd2[i][target]; exists {
+		return ans
+	}
+	ans := false
+	ans = ans || p7rec2(ar, target-ar[i], i-1)
+	if !ans && target%ar[i] == 0 {
+		ans = ans || p7rec2(ar, target/ar[i], i-1)
+	}
+	if !ans {
+		e10 := p10(ar[i])
+		if (target-ar[i])%e10 == 0 {
+			ans = ans || p7rec2(ar, (target-ar[i])/e10, i-1)
+		}
+	}
+	dd2[i][target] = ans
+	return ans
 }
 
 func (p Day07) Part2(lines []string) string {
@@ -62,55 +108,12 @@ func (p Day07) Part2(lines []string) string {
 				row = append(row, cur)
 			}
 		}
-		solved := false
-		for m := range 1 << (len(row) - 1) {
-			cur := row[0]
-			for i := 1; i < len(row); i++ {
-				if (1<<(i-1))&m != 0 {
-					cur += row[i]
-				} else {
-					cur *= row[i]
-				}
-			}
-			if cur == target {
-				solved = true
-				ans += target
-				break
-			}
+		dd2 = make([]map[int]bool, len(row))
+		for i := range len(row) {
+			dd2[i] = make(map[int]bool)
 		}
-		if !solved {
-			p3 := make([]int, len(row)+1)
-			p3[0] = 1
-			for i := range len(row) {
-				p3[i+1] = p3[i] * 3
-			}
-			s10 := make([]int, len(row))
-			for i := range len(row) {
-				s10[i] = len(strconv.Itoa(row[i]))
-			}
-			p10 := make([]int, 10)
-			p10[0] = 1
-			for i := range 9 {
-				p10[i+1] = p10[i] * 10
-			}
-			for m := range p3[len(row)-1] {
-				cur := row[0]
-				for i := 1; i < len(row); i++ {
-					t := (m / p3[i-1]) % 3
-					if t == 0 {
-						cur += row[i]
-					} else if t == 1 {
-						cur *= row[i]
-					} else {
-						cur = cur*p10[s10[i]] + row[i]
-					}
-				}
-				if cur == target {
-					solved = true
-					ans += target
-					break
-				}
-			}
+		if p7rec2(row, target, len(row)-1) {
+			ans += target
 		}
 	}
 	return fmt.Sprint(ans)
