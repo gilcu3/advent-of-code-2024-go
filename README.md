@@ -32,21 +32,24 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Go](https://go.dev
 
 | Day | Part 1 | Part 2 |
 | :---: | :---: | :---:  |
-| [Day 1](./internal/year2024/day01.go) | `182.817µs` | `257.806µs` |
-| [Day 2](./internal/year2024/day02.go) | `239.129µs` | `572.252µs` |
-| [Day 3](./internal/year2024/day03.go) | `362.334µs` | `728.405µs` |
-| [Day 4](./internal/year2024/day04.go) | `1.390ms` | `1.313ms` |
-| [Day 5](./internal/year2024/day05.go) | `536.276µs` | `629.213µs` |
-| [Day 6](./internal/year2024/day06.go) | `265.911µs` | `693.900ms` |
-| [Day 7](./internal/year2024/day07.go) | `2.633ms` | `4.709ms` |
-| [Day 8](./internal/year2024/day08.go) | `46.777µs` | `69.634µs` |
-| [Day 9](./internal/year2024/day09.go) | `421.512µs` | `59.309ms` |
-| [Day 10](./internal/year2024/day10.go) | `1.532ms` | `223.650µs` |
-| [Day 11](./internal/year2024/day11.go) | `8.649ms` | `8.897µs` |
-| [Day 12](./internal/year2024/day12.go) | `1.194ms` | `1.120ms` |
-| [Day 13](./internal/year2024/day13.go) | `396.389µs` | `130.837µs` |
+| [Day 1](./internal/year2024/day01.go) | `192.328µs` | `277.442µs` |
+| [Day 2](./internal/year2024/day02.go) | `271.722µs` | `668.116µs` |
+| [Day 3](./internal/year2024/day03.go) | `355.281µs` | `700.291µs` |
+| [Day 4](./internal/year2024/day04.go) | `1.310ms` | `1.251ms` |
+| [Day 5](./internal/year2024/day05.go) | `546.704µs` | `680.442µs` |
+| [Day 6](./internal/year2024/day06.go) | `195.475µs` | `528.236ms` |
+| [Day 7](./internal/year2024/day07.go) | `2.406ms` | `4.369ms` |
+| [Day 8](./internal/year2024/day08.go) | `37.147µs` | `54.927µs` |
+| [Day 9](./internal/year2024/day09.go) | `302.286µs` | `55.452ms` |
+| [Day 10](./internal/year2024/day10.go) | `1.050ms` | `162.316µs` |
+| [Day 11](./internal/year2024/day11.go) | `7.602ms` | `7.479µs` |
+| [Day 12](./internal/year2024/day12.go) | `967.359µs` | `1.036ms` |
+| [Day 13](./internal/year2024/day13.go) | `359.420µs` | `110.144µs` |
+| [Day 14](./internal/year2024/day14.go) | `1.028ms` | `1.890s` |
+| [Day 15](./internal/year2024/day15.go) | `537.784µs` | `1.055ms` |
+| [Day 16](./internal/year2024/day16.go) | `7.426ms` | `15.831ms` |
 
-**Total: 780.821ms**
+**Total: 2.525s**
 <!--- benchmarking table --->
 
 ---
