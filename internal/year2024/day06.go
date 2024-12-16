@@ -58,37 +58,21 @@ func (p Day06) Part1(lines []string) string {
 	return fmt.Sprint(ans)
 }
 
-func ccopy(ori [][]int) [][]int {
-	cop := make([][]int, len(ori))
-	for i := range ori {
-		cop[i] = make([]int, len(ori[i]))
-		copy(cop[i], ori[i])
-	}
-	return cop
-}
-
-func isLoop(ar [][]int, sx, sy int) bool {
+func isLoop(seen [][][]int, mark int, ar [][]int, sx, sy, d int) bool {
 	n, m := len(ar), len(ar[0])
-	seen := make([][]int, n)
-	for i := range seen {
-		seen[i] = make([]int, m)
-	}
+
 	dd := [][]int{{-1, 0}, {0, 1}, {1, 0}, {0, -1}}
 	for {
-		if seen[sx][sy]&(1<<ar[sx][sy]) != 0 {
+		if seen[sx][sy][d] == mark {
 			return true
 		}
-		seen[sx][sy] ^= (1 << ar[sx][sy])
-		nsx, nsy := sx+dd[ar[sx][sy]][0], sy+dd[ar[sx][sy]][1]
+		seen[sx][sy][d] = mark
+		nsx, nsy := sx+dd[d][0], sy+dd[d][1]
 		if nsx < n && nsx >= 0 && nsy < m && nsy >= 0 {
 			if ar[nsx][nsy] == 4 {
-				ar[nsx][nsy] = ar[sx][sy]
-				ar[sx][sy] = 4
 				sx, sy = nsx, nsy
 			} else if ar[nsx][nsy] == 5 {
-				ar[sx][sy] = (ar[sx][sy] + 1) % 4
-			} else {
-				fmt.Println("impossible")
+				d = (d + 1) % 4
 			}
 
 		} else {
@@ -127,20 +111,30 @@ func (p Day06) Part2(lines []string) string {
 	for i := 0; i < n; i++ {
 		seen[i] = make([]bool, m)
 	}
+	d := ar[sx][sy]
+	ar[sx][sy] = 4
+	seeni := make([][][]int, n)
+	for i := range n {
+		seeni[i] = make([][]int, m)
+		for j := range m {
+			seeni[i][j] = make([]int, 4)
+		}
+	}
+	mark := 0
 	for {
 		seen[sx][sy] = true
-		nsx, nsy := sx+dd[ar[sx][sy]][0], sy+dd[ar[sx][sy]][1]
+		nsx, nsy := sx+dd[d][0], sy+dd[d][1]
 		if nsx < n && nsx >= 0 && nsy < m && nsy >= 0 {
 			if ar[nsx][nsy] == 4 {
 				ar[nsx][nsy] = 5
-				if !seen[nsx][nsy] && isLoop(ccopy(ar), sx, sy) {
+				mark += 1
+				if !seen[nsx][nsy] && isLoop(seeni, mark, ar, sx, sy, d) {
 					ans += 1
 				}
-				ar[nsx][nsy] = ar[sx][sy]
-				ar[sx][sy] = 4
+				ar[nsx][nsy] = 4
 				sx, sy = nsx, nsy
 			} else if ar[nsx][nsy] == 5 {
-				ar[sx][sy] = (ar[sx][sy] + 1) % 4
+				d = (d + 1) % 4
 			}
 		} else {
 			break
