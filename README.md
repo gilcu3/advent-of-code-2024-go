@@ -45,11 +45,11 @@ Solutions for [Advent of Code](https://adventofcode.com/) in [Go](https://go.dev
 | [Day 11](./internal/year2024/day11.go) | `7.602ms` | `7.479µs` |
 | [Day 12](./internal/year2024/day12.go) | `967.359µs` | `1.036ms` |
 | [Day 13](./internal/year2024/day13.go) | `359.420µs` | `110.144µs` |
-| [Day 14](./internal/year2024/day14.go) | `1.028ms` | `1.890s` |
+| [Day 14](./internal/year2024/day14.go) | `887.116µs` | `147.532ms` |
 | [Day 15](./internal/year2024/day15.go) | `537.784µs` | `1.055ms` |
 | [Day 16](./internal/year2024/day16.go) | `7.426ms` | `15.831ms` |
 
-**Total: 2.020s**
+**Total: 277.666ms**
 <!--- benchmarking table --->
 
 ---

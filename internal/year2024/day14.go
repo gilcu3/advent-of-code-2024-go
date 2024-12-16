@@ -74,12 +74,12 @@ func (p Day14) Part1(lines []string) string {
 // 	fmt.Println()
 // }
 
-func visit(ar [][]int, seen [][]bool, dd [][]int, px, py int) int {
+func visit(ar [][]int, seen [][]int, mark int, dd [][]int, px, py int) int {
 
 	n, m := len(ar), len(ar[0])
 
 	qx, qy := []int{px}, []int{py}
-	seen[px][py] = true
+	seen[px][py] = mark
 	front := 0
 	ans := 0
 	for front < len(qx) {
@@ -88,8 +88,8 @@ func visit(ar [][]int, seen [][]bool, dd [][]int, px, py int) int {
 		ans += ar[cx][cy]
 		for d := range 4 {
 			nx, ny := cx+dd[d][0], cy+dd[d][1]
-			if 0 <= nx && nx < n && 0 <= ny && ny < m && ar[nx][ny] > 0 && !seen[nx][ny] {
-				seen[nx][ny] = true
+			if 0 <= nx && nx < n && 0 <= ny && ny < m && ar[nx][ny] > 0 && seen[nx][ny] != mark {
+				seen[nx][ny] = mark
 				qx, qy = append(qx, nx), append(qy, ny)
 			}
 		}
@@ -123,36 +123,34 @@ func (p Day14) realPart2(lines []string, n, m int) string {
 	}
 	steps := 0
 	mx := 0
-	seen := make([][]bool, n)
+	seen := make([][]int, n)
 	for i := range n {
-		seen[i] = make([]bool, m)
+		seen[i] = make([]int, m)
 	}
-	dd := [][]int{{0, 1}, {1, 0}, {0, -1}, {-1, 1}, {-1, -1}, {1, -1}, {1, 1}}
+	mark := 0
+	dd := [][]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
 	for {
-		for i := range n {
-			for j := range m {
-				ar[i][j] = 0
-				seen[i][j] = false
-			}
-		}
+
 		for i := range len(px) {
 			ar[px[i]][py[i]] += 1
 		}
 		steps += 1
 
 		cur := 0
-		for i := range n {
-			for j := range m {
-				if !seen[i][j] {
-					cc := visit(ar, seen, dd, i, j)
-					cur = max(cur, cc)
-				}
+		mark += 1
+		for i := range len(px) {
+			if seen[px[i]][py[i]] != mark {
+				cc := visit(ar, seen, mark, dd, px[i], py[i])
+				cur = max(cur, cc)
 			}
 		}
 		mx = max(mx, cur)
 		if cur >= len(px)/3 { // interpretation of majority, a posteriori
 			// render(ar, n, m)
 			break
+		}
+		for i := range len(px) {
+			ar[px[i]][py[i]] -= 1
 		}
 
 		for i := range len(px) {
